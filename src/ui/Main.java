@@ -1,6 +1,5 @@
 package ui;
 import java.util.Scanner;
-import model.TaskReminder;
 import model.TaskReminderController;
 
 public class Main {
@@ -103,7 +102,7 @@ public class Main {
     }
 
     public void registerT_R(){
-       String id = controller.randomID();
+        String id = controller.randomID();
 
         System.out.println("TYPE THE TITTLE OF YOUR TASK/REMAINDER");
         String title = sc.nextLine(); 
@@ -129,7 +128,7 @@ public class Main {
 
         
         if(controller.registerT_R(id, title, description, priority, publicationDay, publicationMonth, publicationYear)){
-            System.out.println("SUCCES REGISTRATION");
+            System.out.println("SUCCESS REGISTRATION");
             System.out.println("YOUR TASK KEY WILL BE " + id + " DONT LOSE IT ");
 
 
