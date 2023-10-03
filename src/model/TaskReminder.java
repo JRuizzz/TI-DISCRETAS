@@ -1,14 +1,14 @@
 package model;
-import java.util.Calendar;
+import java.util.Date;
 
 public class TaskReminder {
     private String id;
     private String title;
     private String description;
-    private Calendar deadline;
+    private Date deadline;
     private Priority priority;
     
-    public TaskReminder(String id, String title, String description, Calendar deadline, Priority priority) {
+    public TaskReminder(String id, String title, String description, Date deadline, Priority priority) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -40,11 +40,11 @@ public class TaskReminder {
         this.description = description;
     }
 
-    public Calendar getDeadline() {
+    public Date getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Calendar deadline) {
+    public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
 
