@@ -1,11 +1,11 @@
 package util;
 
-public class StackNode  <T> {
+public class Node  <T> {
     
     private T element;
-    private StackNode  <T> next;
+    private Node  <T> next;
     
-    public StackNode (T element, StackNode <T> next) {
+    public Node (T element, Node <T> next) {
         this.element = element;
         this.next = next;
     }
@@ -18,11 +18,11 @@ public class StackNode  <T> {
         this.element = element;
     }
 
-    public StackNode <T> getNext() {
+    public Node <T> getNext() {
         return next;
     }
 
-    public void setNext(StackNode <T> next) {
+    public void setNext(Node <T> next) {
         this.next = next;
     }
 

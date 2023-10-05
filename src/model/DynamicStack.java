@@ -1,12 +1,12 @@
 package model;
-import util.StackNode;
+import util.Node;
 
 public class DynamicStack <T> {
   
-    private  StackNode <T> top; 
+    private  Node <T> top; 
     private int size;
    
-    public DynamicStack(StackNode<T> top, int size) {
+    public DynamicStack(Node<T> top, int size) {
         this.top = null;
         this.size = 0;
     }
@@ -31,7 +31,7 @@ public class DynamicStack <T> {
 
 
     public void push (T element){
-        StackNode <T> aux = new StackNode<>(element, top);
+        Node <T> aux = new Node<>(element, top);
         top = aux;
         size++;
     }
@@ -42,7 +42,7 @@ public class DynamicStack <T> {
             return null; 
         } else {
             T element = top.getElement();
-            StackNode <T> aux = top.getNext();
+            Node <T> aux = top.getNext();
             top = null; 
             top = aux;
             this.size--;
@@ -56,7 +56,7 @@ public class DynamicStack <T> {
         if (isEmpty()){
             return "The Stack is empty";
         } else {
-            StackNode<T> aux = top; 
+            Node<T> aux = top; 
             while (aux!=null){
                 result += aux.toString();
                 aux = aux.getNext();
