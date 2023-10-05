@@ -8,11 +8,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import util.HashTable;
+import model.PriorityQueue;
 
 public class Controller {
+    private PriorityQueue<TaskReminder> priorityQueue;
     private HashTable<String,TaskReminder> hashTable;
     public Controller(){
         hashTable = new HashTable<>();
+        priorityQueue = new PriorityQueue<TaskReminder>(null, null, null);
     }
 
 
@@ -31,7 +34,22 @@ public class Controller {
         }
         TaskReminder task = new TaskReminder(id, title, description, deadline, p);
         hashTable.add(task);
+        priorityQueue.enqueue(task, p);  // PRUEBA: se agrega la cola de prioridad
     }
+
+    public String showTasksByPriority() {
+        StringBuilder msg = new StringBuilder("Tasks by Priority:\n");
+        while (!priorityQueue.isEmpty()) {
+            TaskReminder task = priorityQueue.dequeue();
+            msg.append("Priority: ").append(task.getPriority()).append("\n");
+            msg.append("Id: ").append(task.getId()).append("\n");
+            msg.append("Title: ").append(task.getTitle()).append("\n");
+            msg.append("Description: ").append(task.getDescription()).append("\n");
+            msg.append("Deadline: ").append(task.getDeadline()).append("\n\n");
+        }
+        return msg.toString();
+    }
+ 
 
     public String modifyTask(String id, int option, String newTitle,String newDescription, Date newDeadline, int newPriority) {
         
