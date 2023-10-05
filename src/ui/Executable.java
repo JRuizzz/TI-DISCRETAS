@@ -75,7 +75,7 @@ public class Executable {
         System.out.println("Type the description");
         String description = lector.nextLine();
     
-        System.out.println("Choose the priority of your task:\n1. HIGH PRIORITY\n2. LOW PRIORITY");
+        System.out.println("Choose the priority of your task:\n1. HIGH PRIORITY\n2. MEDIUM PRIORITY\n3. LOW PRIORITY");
         int priority = lector.nextInt();
     
         System.out.println("TYPE YOUR DEADLINE");

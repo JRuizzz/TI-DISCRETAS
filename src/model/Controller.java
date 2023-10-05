@@ -23,6 +23,9 @@ public class Controller {
                 p = Priority.HIGH_PRIORITY;
             break;
             case 2:
+                p = Priority.MEDIUM_PRIORITY; 
+            break; 
+            case 3:
                 p = Priority.LOW_PRIORITY;
             break;
         }
