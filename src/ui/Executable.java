@@ -31,6 +31,7 @@ public class Executable {
             System.out.println("1.Gestionar tareas");
             System.out.println("2.Gestion de prioridad");
             System.out.println("3.Imprimir tabla");
+            System.out.println("4.Mostrar por importancia");
 		    int option = lector.nextInt();
 		
             switch (option) {
@@ -51,6 +52,7 @@ public class Executable {
                         case 3:
                             removeTk();
                         break;
+                        
                     }
                 break;
                 case 2:
@@ -58,6 +60,10 @@ public class Executable {
                 case 3:
                     imprimirTabla();
                 break;
+
+                case 4: 
+                showTasksByPriority();
+                break; 
             }
         
         }
@@ -177,5 +183,15 @@ public class Executable {
 
     public void imprimirTabla(){
         System.out.println(controller.showTask());
+    }
+
+    public void showTasksByPriority(){
+        String query = controller.showTasksByPriority();
+        System.out.println(query);
+    }
+
+
+    public void DequeuePriority(){
+        
     }
 }

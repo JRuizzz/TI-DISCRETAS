@@ -15,12 +15,10 @@ public class DynamicStack <T> {
         return top==null;
     }
 
-
      public int size() {
         return this.size; 
      }
 
-    
     public T top(){ //
         if(isEmpty()){
             return null; 
@@ -29,14 +27,12 @@ public class DynamicStack <T> {
         }
     }
 
-
     public void push (T element){
         Node <T> aux = new Node<>(element, top);
         top = aux;
         size++;
     }
     
-
     public T pop(){ 
         if(isEmpty()){
             return null; 
@@ -49,7 +45,6 @@ public class DynamicStack <T> {
             return element; 
         }
     }
-
 
     public String toString(){
          String result = "";
@@ -66,6 +61,5 @@ public class DynamicStack <T> {
         }
         return result;
     }
-
 
 }

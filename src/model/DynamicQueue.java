@@ -21,7 +21,7 @@ public class DynamicQueue <T> {
         return size; 
     }
 
-    public T first(){
+    public T first(){    
         
         if(isEmpty()){
             return null;

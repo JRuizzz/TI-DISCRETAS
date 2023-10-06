@@ -8,34 +8,37 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import util.HashTable;
-import model.PriorityQueue;
 
 public class Controller {
-    private PriorityQueue<TaskReminder> priorityQueue;
     private HashTable<String,TaskReminder> hashTable;
+    private PriorityQueue<TaskReminder> priorityQueue;
     public Controller(){
         hashTable = new HashTable<>();
-        priorityQueue = new PriorityQueue<TaskReminder>(null, null, null);
+        priorityQueue = new PriorityQueue<>();
     }
 
-
     public void addTask(String id,String title,String description,int priority,Date deadline){
+         int pI = 0;
         Priority p = null;
         switch(priority){
             case 1:
                 p = Priority.HIGH_PRIORITY;
+                pI = 3; 
             break;
             case 2:
                 p = Priority.MEDIUM_PRIORITY; 
+                pI = 2;
             break; 
             case 3:
                 p = Priority.LOW_PRIORITY;
+                pI = 1;
             break;
         }
-        TaskReminder task = new TaskReminder(id, title, description, deadline, p);
+        TaskReminder task = new TaskReminder(id, title, description, deadline, p,pI);
         hashTable.add(task);
-        priorityQueue.enqueue(task, p);  // PRUEBA: se agrega la cola de prioridad
+        priorityQueue.enqueue(task);
     }
+
 
     public String showTasksByPriority() {
         StringBuilder msg = new StringBuilder("Tasks by Priority:\n");
@@ -49,7 +52,6 @@ public class Controller {
         }
         return msg.toString();
     }
- 
 
     public String modifyTask(String id, int option, String newTitle,String newDescription, Date newDeadline, int newPriority) {
         
@@ -136,7 +138,8 @@ public class Controller {
                 }
                 return priorityComparison;
             }
-        });
+        }
+        );
     
         String currentPriority = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
