@@ -1,6 +1,4 @@
-package model;
-import util.Node;
-
+package util;
 public class DynamicStack <T> {
   
     private  Node <T> top; 

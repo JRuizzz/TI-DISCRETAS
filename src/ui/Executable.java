@@ -31,7 +31,7 @@ public class Executable {
             System.out.println("1.Gestionar tareas");
             System.out.println("2.Gestion de prioridad");
             System.out.println("3.Imprimir tabla");
-            System.out.println("4.Mostrar por importancia");
+            System.out.println("4.Finish Task");
 		    int option = lector.nextInt();
 		
             switch (option) {
@@ -62,7 +62,15 @@ public class Executable {
                 break;
 
                 case 4: 
+                System.out.println("\n 1.Priority \n2.Deadline");
+                int finishTask = lector.nextInt();
+
+                if(finishTask==1){
                 showTasksByPriority();
+
+                } else {
+
+                }
                 break; 
             }
         

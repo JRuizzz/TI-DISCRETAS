@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import util.PriorityQueue;
 import java.util.Random;
 import util.HashTable;
 
@@ -39,7 +40,8 @@ public class Controller {
         priorityQueue.enqueue(task);
     }
 
-
+    
+    
     public String showTasksByPriority() {
         StringBuilder msg = new StringBuilder("Tasks by Priority:\n");
         while (!priorityQueue.isEmpty()) {
