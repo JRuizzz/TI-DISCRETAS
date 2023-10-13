@@ -67,10 +67,9 @@ public class TaskReminder implements Comparable<TaskReminder> {
     }
 
     @Override
-public int compareTo(TaskReminder other) {
-    // Comparamos los índices de prioridad
-    return Integer.compare(this.getPriorityIndex(), other.getPriorityIndex());
-}
+    public int compareTo(TaskReminder other) {
+        return Integer.compare(this.getPriorityIndex(), other.getPriorityIndex());
+    }
 
 
 }
