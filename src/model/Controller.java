@@ -130,7 +130,7 @@ public class Controller {
     }
 
     public boolean undoAction() {
-        boolean confirmUndoAction = false;
+        boolean confirmUndoAction;
         if (!actionStack.isEmpty()) {
             Action lastAction = actionStack.pop();
             ActionType actionType = lastAction.getActionType();
@@ -162,10 +162,10 @@ public class Controller {
                 break;
             }
             confirmUndoAction = true;
-            return confirmUndoAction;
         } else {
-            return confirmUndoAction;
+            confirmUndoAction = false;
         }
+        return confirmUndoAction;
     }
     public String randomID() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
