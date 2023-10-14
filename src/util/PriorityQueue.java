@@ -1,8 +1,9 @@
 package util;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class PriorityQueue<T extends Comparable<T>> {
+public class PriorityQueue<T extends Comparable<T>> implements Iterable<T> {
 
     private List<T> heap;
 
@@ -10,27 +11,50 @@ public class PriorityQueue<T extends Comparable<T>> {
         heap = new ArrayList<>();
     }
 
+    public int size() {
+        return heap.size();
+    }
+
+    public T getRoot() {
+        if (isEmpty()) {
+            return null;
+        }
+        return heap.get(0);
+    }
+
+    public T getSecond() {
+        if (isEmpty() || heap.size() < 2) {
+            return null;
+        }
+        return heap.get(1);
+    }
+    
+    
+
     public void enqueue(T element) {
         heap.add(element);
         heapifyUp(heap.size() - 1);
     }
-
+    
+    
     public T dequeue() {
         if (isEmpty()) {
             return null;
         }
-
+    
         T root = heap.get(0);
-        T lastElement = heap.remove(heap.size() - 1);
-
-        if (!isEmpty()) {
+    
+        if (heap.size() == 1) {
+            heap.clear();  // Si hay solo un elemento, simplemente lo eliminamos.
+        } else {
+            T lastElement = heap.remove(heap.size() - 1);
             heap.set(0, lastElement);
             heapifyDown(0);
         }
-
+    
         return root;
-    } 
-
+    }
+    
     
     public boolean isEmpty() {
         return heap.isEmpty();
@@ -79,5 +103,9 @@ public class PriorityQueue<T extends Comparable<T>> {
         heap.set(j, temp);
     }
 
+    @Override
+    public Iterator<T> iterator() {
+        return heap.iterator();
+    }
     
 }
