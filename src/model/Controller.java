@@ -6,30 +6,70 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import util.PriorityQueue;
 import java.util.Random;
 import util.HashTable;
 
 public class Controller {
     private HashTable<String,TaskReminder> hashTable;
+    private PriorityQueue<TaskReminder> priorityQueue;
     public Controller(){
         hashTable = new HashTable<>();
+        priorityQueue = new PriorityQueue<>();
     }
 
-
     public void addTask(String id,String title,String description,int priority,Date deadline){
+         int pI = 0;
         Priority p = null;
         switch(priority){
             case 1:
                 p = Priority.HIGH_PRIORITY;
+                pI = 3; 
             break;
             case 2:
+                p = Priority.MEDIUM_PRIORITY; 
+                pI = 2;
+            break; 
+            case 3:
                 p = Priority.LOW_PRIORITY;
+                pI = 1;
             break;
         }
-        TaskReminder task = new TaskReminder(id, title, description, deadline, p);
+        TaskReminder task = new TaskReminder(id, title, description, deadline, p,pI);
         hashTable.add(task);
+        priorityQueue.enqueue(task);
     }
+    
+    
+    public String showTasksByPriority() {
+        StringBuilder msg = new StringBuilder("Tasks by Priority:\n");
+    
+        System.out.println("Before dequeuing: Is the priorityQueue empty? Size " + priorityQueue.isEmpty() + (" its Size is " + priorityQueue.size()));
+    
+        for (TaskReminder task : priorityQueue) {
+            msg.append("Priority: ").append(task.getPriority()).append("\n");
+            msg.append("Id: ").append(task.getId()).append("\n");
+            msg.append("Title: ").append(task.getTitle()).append("\n");
+            msg.append("Description: ").append(task.getDescription()).append("\n");
+            msg.append("Deadline: ").append(task.getDeadline()).append("\n\n");
+        }
+    
+        if (!priorityQueue.isEmpty()) {
+            TaskReminder taskId = priorityQueue.getRoot();
+            priorityQueue.dequeue();
+            System.out.println("The task " + taskId.getId() + " has been removed.");
+        }
+    
+        System.out.println("After dequeuing: Is the priorityQueue empty? " + priorityQueue.isEmpty() + (" its Size is " + priorityQueue.size()));
+    
+        return msg.toString();
+    }
+    
+    
 
+    
+
+    
     public String modifyTask(String id, int option, String newTitle,String newDescription, Date newDeadline, int newPriority) {
         
         String msg = "";
@@ -82,6 +122,19 @@ public class Controller {
         return msg;
     }
 
+
+
+    public void removeTaskWithHighestPriority() {
+        TaskReminder highestPriorityTask = priorityQueue.dequeue();
+        if (highestPriorityTask != null) {
+            String taskId = highestPriorityTask.getId();
+            hashTable.remove(taskId); // Elimina la tarea de la tabla hash
+        }
+    }
+
+
+    
+
     public String randomID() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder sb = new StringBuilder();
@@ -115,7 +168,8 @@ public class Controller {
                 }
                 return priorityComparison;
             }
-        });
+        }
+        );
     
         String currentPriority = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -131,7 +185,7 @@ public class Controller {
             msg.append("Description: ").append(task.getDescription()).append("\n");
             msg.append("Deadline: ").append(dateFormat.format(task.getDeadline())).append("\n\n");
         }
-    
+        
         return msg.toString();
     }
     
