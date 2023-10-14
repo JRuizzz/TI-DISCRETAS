@@ -31,7 +31,6 @@ public class Executable {
             System.out.println("1.Gestionar tareas");
             System.out.println("2.Gestion de prioridad");
             System.out.println("3.Imprimir tabla");
-            System.out.println("4.Finish Task");
 		    int option = lector.nextInt();
 		
             switch (option) {
@@ -52,27 +51,13 @@ public class Executable {
                         case 3:
                             removeTk();
                         break;
-                        
                     }
                 break;
                 case 2:
                 break;
                 case 3:
-                imprimirTabla();
+                    imprimirTabla();
                 break;
-
-                case 4: 
-                System.out.println("\n 1.Priority \n2.Deadline");
-                int finishTask = lector.nextInt();
-
-                lector.nextLine();
-                if(finishTask==1){
-                showTasksByPriority();
-                //removeHighestPriorityTask();
-                } else {
-                    
-                }
-                break; 
             }
         
         }
@@ -90,7 +75,7 @@ public class Executable {
         System.out.println("Type the description");
         String description = lector.nextLine();
     
-        System.out.println("Choose the priority of your task:\n1. HIGH PRIORITY\n2. MEDIUM PRIORITY\n3. LOW PRIORITY");
+        System.out.println("Choose the priority of your task:\n1. HIGH PRIORITY\n2. LOW PRIORITY");
         int priority = lector.nextInt();
     
         System.out.println("TYPE YOUR DEADLINE");
@@ -192,16 +177,5 @@ public class Executable {
 
     public void imprimirTabla(){
         System.out.println(controller.showTask());
-    }
-
-    public void showTasksByPriority(){
-        String query = controller.showTasksByPriority();
-        System.out.println(query);
-        
-    }
-
-    private void removeHighestPriorityTask() {
-        controller.removeTaskWithHighestPriority();
-        System.out.println("Task with highest priority has been removed.");
     }
 }
