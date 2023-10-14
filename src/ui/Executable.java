@@ -32,6 +32,8 @@ public class Executable {
             System.out.println("2.Gestion de prioridad");
             System.out.println("3.Imprimir tabla");
             System.out.println("4.Finish Task");
+            System.out.println("5.Deshacer última acción");
+
 		    int option = lector.nextInt();
 		
             switch (option) {
@@ -73,6 +75,9 @@ public class Executable {
                     
                 }
                 break; 
+                case 5:
+                    undoLastAction();
+                break;
             }
         
         }
@@ -129,7 +134,7 @@ public class Executable {
         String id = lector.nextLine();
     
         System.out.println("Choose the attribute you want to modify for your task");
-        System.out.println("1.Tittle \n2.Description \n3.Deadline \4.Priority");
+        System.out.println("1.Tittle \n2.Description \n3.Deadline \n4.Priority");
         int option = lector.nextInt();
     
         lector.nextLine();
@@ -203,5 +208,12 @@ public class Executable {
     private void removeHighestPriorityTask() {
         controller.removeTaskWithHighestPriority();
         System.out.println("Task with highest priority has been removed.");
+    }
+    public void undoLastAction() {
+        if(controller.undoAction()){
+            System.out.println("Undo action successful.");
+        }else{
+            System.out.println("No actions to undo.");
+        }
     }
 }

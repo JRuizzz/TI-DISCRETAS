@@ -1,10 +1,14 @@
-package util; 
+package util;
+
+import java.util.List;
+
 public class DynamicQueue <T> {
 
     private Node <T> first;
     private Node <T> last; 
     private int size;
-    
+    private List<T> addedElements;  // Lista de elementos agregados
+
     public DynamicQueue(Node<T> first, Node<T> last, int size) {
         this.first = null;
         this.last = null;
@@ -27,42 +31,44 @@ public class DynamicQueue <T> {
         return first.getElement();
     }
 
-    public T dequeue(){
-        if(isEmpty()){
+    public T dequeue() {
+        if (isEmpty()) {
             return null;
-        } 
-
-        T element = first.getElement();
-        Node <T> aux = first.getNext();
-        first = null; 
-        first = aux;
-        size--;
-        if(isEmpty()){
-            last = null;  //opcional poner el if.
         }
+    
+        T element = first.getElement();
+        Node<T> aux = first.getNext();
+        first = aux; 
+        size--;
+    
+        if (isEmpty()) {
+            last = null;
+        }
+        
         return element;
-
     }
+    
+    public T getLastAddedElement() {
+        if (!addedElements.isEmpty()) {
+            return addedElements.get(addedElements.size() - 1);
+        }
+        return null;
+    }
+    
+    public void enqueue(T element) {
+        Node<T> aux = new Node<>(element, null);
 
-
-    public T enqueue(T element){
-        Node <T> aux = new Node <> (element, null);  //Estrcutura FIFO
-
-        if(isEmpty()){
-            first = aux; 
+        if (isEmpty()) {
+            first = aux;
             last = aux;
         } else {
-            if (size()==1){
-                first.setNext(last);                
-            } else {
-                last.setNext(aux);
-            }
-            last = aux; 
+            last.setNext(aux);
+            last = aux;
         }
         size++;
-        return aux.getElement();
-    }
 
+        addedElements.add(element);
+    }
 
     public String toString(){
         String s = "";
