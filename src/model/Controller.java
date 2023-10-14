@@ -39,22 +39,37 @@ public class Controller {
         hashTable.add(task);
         priorityQueue.enqueue(task);
     }
-
     
     
     public String showTasksByPriority() {
         StringBuilder msg = new StringBuilder("Tasks by Priority:\n");
-        while (!priorityQueue.isEmpty()) {
-            TaskReminder task = priorityQueue.dequeue();
+    
+        System.out.println("Before dequeuing: Is the priorityQueue empty? Size " + priorityQueue.isEmpty() + (" its Size is " + priorityQueue.size()));
+    
+        for (TaskReminder task : priorityQueue) {
             msg.append("Priority: ").append(task.getPriority()).append("\n");
             msg.append("Id: ").append(task.getId()).append("\n");
             msg.append("Title: ").append(task.getTitle()).append("\n");
             msg.append("Description: ").append(task.getDescription()).append("\n");
             msg.append("Deadline: ").append(task.getDeadline()).append("\n\n");
         }
+    
+        if (!priorityQueue.isEmpty()) {
+            TaskReminder taskId = priorityQueue.getRoot();
+            priorityQueue.dequeue();
+            System.out.println("The task " + taskId.getId() + " has been removed.");
+        }
+    
+        System.out.println("After dequeuing: Is the priorityQueue empty? " + priorityQueue.isEmpty() + (" its Size is " + priorityQueue.size()));
+    
         return msg.toString();
     }
+    
+    
 
+    
+
+    
     public String modifyTask(String id, int option, String newTitle,String newDescription, Date newDeadline, int newPriority) {
         
         String msg = "";
@@ -107,6 +122,19 @@ public class Controller {
         return msg;
     }
 
+
+
+    public void removeTaskWithHighestPriority() {
+        TaskReminder highestPriorityTask = priorityQueue.dequeue();
+        if (highestPriorityTask != null) {
+            String taskId = highestPriorityTask.getId();
+            hashTable.remove(taskId); // Elimina la tarea de la tabla hash
+        }
+    }
+
+
+    
+
     public String randomID() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder sb = new StringBuilder();
@@ -157,7 +185,7 @@ public class Controller {
             msg.append("Description: ").append(task.getDescription()).append("\n");
             msg.append("Deadline: ").append(dateFormat.format(task.getDeadline())).append("\n\n");
         }
-    
+        
         return msg.toString();
     }
     
