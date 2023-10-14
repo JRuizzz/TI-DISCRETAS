@@ -1,8 +1,10 @@
 package util;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
+import model.Priority;
+import model.TaskReminder;
 public class PriorityQueue<T extends Comparable<T>> implements Iterable<T> {
 
     private List<T> heap;
@@ -107,5 +109,55 @@ public class PriorityQueue<T extends Comparable<T>> implements Iterable<T> {
     public Iterator<T> iterator() {
         return heap.iterator();
     }
-    
+
+
+     public void removeTaskById(String taskId) {
+    Iterator<T> iterator = heap.iterator();
+
+    while (iterator.hasNext()) {
+        T task = iterator.next();
+        if (task instanceof TaskReminder && ((TaskReminder) task).getId().equals(taskId)) {
+            iterator.remove();
+            return;
+        }
+    }
+} 
+
+public void modifyTaskById(String taskId, String newTitle, String newDescription, Date newDeadline, int newPriority) {
+    Iterator<T> iterator = heap.iterator();
+
+    while (iterator.hasNext()) {
+        T task = iterator.next();
+        if (task instanceof TaskReminder && ((TaskReminder) task).getId().equals(taskId)) {
+            TaskReminder modifiedTask = (TaskReminder) task;
+
+            // Modificar atributos
+            modifiedTask.setTitle(newTitle);
+            modifiedTask.setDescription(newDescription);
+            modifiedTask.setDeadline(newDeadline);
+            
+            Priority p = null;
+            switch (newPriority) {
+                case 1:
+                    p = Priority.HIGH_PRIORITY;
+                    break;
+                case 2:
+                    p = Priority.LOW_PRIORITY;
+                    break;
+            }
+            modifiedTask.setPriority(p);
+
+            // Mantener la propiedad de la cola de prioridad
+            heapifyUp(heap.indexOf(task));
+            heapifyDown(heap.indexOf(task));
+
+            return;
+        }
+    }
 }
+
+
+}
+
+ 
+

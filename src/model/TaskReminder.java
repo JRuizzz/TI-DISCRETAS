@@ -1,21 +1,19 @@
 package model;
 import java.util.Date;
 
-public class TaskReminder implements Comparable<TaskReminder> {
+public class TaskReminder {
     private String id;
     private String title;
     private String description;
     private Date deadline;
     private Priority priority;
-    private int priorityIndex;
     
-    public TaskReminder(String id, String title, String description, Date deadline, Priority priority, int priorityIndex) {
+    public TaskReminder(String id, String title, String description, Date deadline, Priority priority) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.deadline = deadline;
         this.priority = priority;
-        this.priorityIndex = priorityIndex;
     }
 
     public String getId() {
