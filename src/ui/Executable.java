@@ -64,21 +64,16 @@ public class Executable {
                 break;
 
                 case 4: 
-                System.out.println("\n 1.Priority \n2.Deadline");
+                System.out.println("1.Priority \n2.Deadline");
                 int finishTask = lector.nextInt();
-
                 if(finishTask==1){
                 showTasksByPriority();
-
-                } else {
-
                 }
                 break; 
                 case 5:
                     undoLastAction();
                 break;
-            }
-        
+            } 
         }
         
     }
@@ -137,7 +132,7 @@ public class Executable {
         int option = lector.nextInt();
     
         lector.nextLine();
-    
+
         String msg = ""; 
     
         switch (option) {

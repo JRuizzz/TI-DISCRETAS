@@ -65,7 +65,6 @@ public class Controller {
         if (!priorityQueue.isEmpty()) {
             TaskReminder taskId = priorityQueue.getRoot();
             priorityQueue.dequeue();
-            hashTable.remove(taskId.getId());
             System.out.println("The task " + taskId.getId() + " has been removed.");
         }
     
@@ -73,7 +72,7 @@ public class Controller {
     
         return msg.toString();
     }
-    
+
 
     public String modifyTask(String id, int option, String newTitle, String newDescription, Date newDeadline, int newPriority) {
         String msg = "";
@@ -121,6 +120,8 @@ public class Controller {
         if (modifyAction != null) {
             actionStack.push(modifyAction);
         }
+
+        priorityQueue.modifyTaskById(id, newTitle, newDescription, newDeadline, newPriority);
     
         msg += "Task with ID " + id + " has been modified.";
     
@@ -131,7 +132,8 @@ public class Controller {
         TaskReminder taskToRemove = hashTable.get(taskId);
         String msg = "";
         if (taskToRemove != null) {
-            hashTable.remove(taskId);
+            hashTable.remove(taskId);       
+            priorityQueue.removeTaskById(taskId);
             msg += "Task with ID " + taskId + " has been removed.";
             Action removeAction = new Action(ActionType.REMOVE_TASK, taskToRemove);
             actionStack.push(removeAction);
