@@ -60,19 +60,18 @@ public class Executable {
                 case 2:
                 break;
                 case 3:
-                imprimirTabla();
+                    imprimirTabla();
                 break;
 
                 case 4: 
                 System.out.println("\n 1.Priority \n2.Deadline");
                 int finishTask = lector.nextInt();
 
-                lector.nextLine();
                 if(finishTask==1){
                 showTasksByPriority();
-                //removeHighestPriorityTask();
+
                 } else {
-                    
+
                 }
                 break; 
                 case 5:
@@ -202,12 +201,11 @@ public class Executable {
     public void showTasksByPriority(){
         String query = controller.showTasksByPriority();
         System.out.println(query);
-        
     }
 
-    private void removeHighestPriorityTask() {
-        controller.removeTaskWithHighestPriority();
-        System.out.println("Task with highest priority has been removed.");
+
+    public void DequeuePriority(){
+        
     }
     public void undoLastAction() {
         if(controller.undoAction()){
