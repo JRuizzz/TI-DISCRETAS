@@ -56,4 +56,18 @@ public class TaskReminder {
         this.priority = priority;
     }
 
+    public int getPriorityIndex() {
+        return priorityIndex;
+    }
+
+    public void setPriorityIndex(int priorityIndex) {
+        this.priorityIndex = priorityIndex;
+    }
+
+    @Override
+    public int compareTo(TaskReminder other) {
+        return Integer.compare(this.getPriorityIndex(), other.getPriorityIndex());
+    }
+
+
 }
