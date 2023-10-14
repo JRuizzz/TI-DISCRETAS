@@ -31,6 +31,9 @@ public class Executable {
             System.out.println("1.Gestionar tareas");
             System.out.println("2.Gestion de prioridad");
             System.out.println("3.Imprimir tabla");
+            System.out.println("4.Finish Task");
+            System.out.println("5.Deshacer última acción");
+
 		    int option = lector.nextInt();
 		
             switch (option) {
@@ -51,12 +54,28 @@ public class Executable {
                         case 3:
                             removeTk();
                         break;
+                        
                     }
                 break;
                 case 2:
                 break;
                 case 3:
                     imprimirTabla();
+                break;
+
+                case 4: 
+                System.out.println("\n 1.Priority \n2.Deadline");
+                int finishTask = lector.nextInt();
+
+                if(finishTask==1){
+                showTasksByPriority();
+
+                } else {
+
+                }
+                break; 
+                case 5:
+                    undoLastAction();
                 break;
             }
         
@@ -75,7 +94,7 @@ public class Executable {
         System.out.println("Type the description");
         String description = lector.nextLine();
     
-        System.out.println("Choose the priority of your task:\n1. HIGH PRIORITY\n2. LOW PRIORITY");
+        System.out.println("Choose the priority of your task:\n1. HIGH PRIORITY\n2. MEDIUM PRIORITY\n3. LOW PRIORITY");
         int priority = lector.nextInt();
     
         System.out.println("TYPE YOUR DEADLINE");
@@ -114,7 +133,7 @@ public class Executable {
         String id = lector.nextLine();
     
         System.out.println("Choose the attribute you want to modify for your task");
-        System.out.println("1.Tittle \n2.Description \n3.Deadline \4.Priority");
+        System.out.println("1.Tittle \n2.Description \n3.Deadline \n4.Priority");
         int option = lector.nextInt();
     
         lector.nextLine();
@@ -177,5 +196,22 @@ public class Executable {
 
     public void imprimirTabla(){
         System.out.println(controller.showTask());
+    }
+
+    public void showTasksByPriority(){
+        String query = controller.showTasksByPriority();
+        System.out.println(query);
+    }
+
+
+    public void DequeuePriority(){
+        
+    }
+    public void undoLastAction() {
+        if(controller.undoAction()){
+            System.out.println("Undo action successful.");
+        }else{
+            System.out.println("No actions to undo.");
+        }
     }
 }
