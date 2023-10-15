@@ -1,11 +1,9 @@
 package model;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
 import util.PriorityQueue;
 import java.util.Random;
 import util.DynamicStack;
@@ -14,16 +12,18 @@ import util.HashTable;
 public class Controller {
     private HashTable<String,TaskReminder> hashTable;
     private PriorityQueue<TaskReminder> priorityQueue;
+    private PriorityQueue<TaskReminder> deadlineHeap;
     private DynamicStack<Action> actionStack;
 
     public Controller(){
         hashTable = new HashTable<>();
         priorityQueue = new PriorityQueue<>();
+        deadlineHeap = new PriorityQueue<>();
         actionStack = new DynamicStack<>(null, 0);
     }
 
     public void addTask(String id,String title,String description,int priority,Date deadline){
-         int pI = 0;
+        int pI = 0;
         Priority p = null;
         switch(priority){
             case 1:
@@ -42,37 +42,55 @@ public class Controller {
         TaskReminder task = new TaskReminder(id, title, description, deadline, p,pI);
         hashTable.add(task);
         priorityQueue.enqueue(task);
+        deadlineHeap.enqueue(task);
 
         Action addAction = new Action(ActionType.ADD_TASK, task);
         actionStack.push(addAction);
     }
 
     
-    
     public String showTasksByPriority() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Formato de fecha
         StringBuilder msg = new StringBuilder("Tasks by Priority:\n");
-    
-        System.out.println("Before dequeuing: Is the priorityQueue empty? Size " + priorityQueue.isEmpty() + (" its Size is " + priorityQueue.size()));
     
         for (TaskReminder task : priorityQueue) {
             msg.append("Priority: ").append(task.getPriority()).append("\n");
             msg.append("Id: ").append(task.getId()).append("\n");
             msg.append("Title: ").append(task.getTitle()).append("\n");
             msg.append("Description: ").append(task.getDescription()).append("\n");
-            msg.append("Deadline: ").append(task.getDeadline()).append("\n\n");
+            msg.append("Deadline: ").append(dateFormat.format(task.getDeadline())).append("\n\n"); // Formatear la fecha
         }
     
         if (!priorityQueue.isEmpty()) {
             TaskReminder taskId = priorityQueue.getRoot();
             priorityQueue.dequeue();
-            System.out.println("The task " + taskId.getId() + " has been removed.");
+            removeTask(taskId.getId());
+            System.out.println("The task " + taskId.getId() + " has been finished.");
         }
-    
-        System.out.println("After dequeuing: Is the priorityQueue empty? " + priorityQueue.isEmpty() + (" its Size is " + priorityQueue.size()));
     
         return msg.toString();
     }
-
+    
+    public String showTasksByDeadline() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Formato de fecha
+        StringBuilder msg = new StringBuilder("Tasks by Deadline:\n");
+    
+        for (TaskReminder task : deadlineHeap) {
+            msg.append("Id: ").append(task.getId()).append("\n");
+            msg.append("Title: ").append(task.getTitle()).append("\n");
+            msg.append("Description: ").append(task.getDescription()).append("\n");
+            msg.append("Deadline: ").append(dateFormat.format(task.getDeadline())).append("\n\n"); // Formatear la fecha
+        }
+    
+        if (!deadlineHeap.deadlineIsEmpty()) {
+            TaskReminder taskId = deadlineHeap.getRoot();
+            deadlineHeap.dequeue();
+            removeTask(taskId.getId());
+            System.out.println("The task " + taskId.getId() + " has been finished.");
+        }
+    
+        return msg.toString();
+    }
 
     public String modifyTask(String id, int option, String newTitle, String newDescription, Date newDeadline, int newPriority) {
         String msg = "";
@@ -81,14 +99,20 @@ public class Controller {
         if (task == null) {
             msg += "Task with ID " + id + " not found.";
         }
-    
+        int pI = 0;
         Priority p = null;
         switch (newPriority) {
             case 1:
                 p = Priority.HIGH_PRIORITY;
+                pI = 3;
                 break;
             case 2:
+                p = Priority.MEDIUM_PRIORITY;
+                pI = 2;
+                break;
+            case 3:
                 p = Priority.LOW_PRIORITY;
+                pI = 1;
                 break;
         }
     
@@ -113,6 +137,7 @@ public class Controller {
             case 4:
                 Priority oldPriority = task.getPriority();
                 task.setPriority(p);
+                task.setPriorityIndex(pI);
                 modifyAction = new Action(ActionType.MODIFY_TASK, task, oldPriority, p);
                 break;
         }
@@ -122,6 +147,7 @@ public class Controller {
         }
 
         priorityQueue.modifyTaskById(id, newTitle, newDescription, newDeadline, newPriority);
+        deadlineHeap.modifyTaskById(id, newTitle, newDescription, newDeadline, newPriority);
     
         msg += "Task with ID " + id + " has been modified.";
     
@@ -134,6 +160,7 @@ public class Controller {
         if (taskToRemove != null) {
             hashTable.remove(taskId);       
             priorityQueue.removeTaskById(taskId);
+            deadlineHeap.removeTaskById(taskId);
             msg += "Task with ID " + taskId + " has been removed.";
             Action removeAction = new Action(ActionType.REMOVE_TASK, taskToRemove);
             actionStack.push(removeAction);
@@ -155,6 +182,7 @@ public class Controller {
                     TaskReminder addedTask = lastAction.getTask();
                     hashTable.remove(addedTask.getId());
                     priorityQueue.dequeue();
+                    deadlineHeap.dequeue();
                     break;
 
                 case MODIFY_TASK:
@@ -168,13 +196,19 @@ public class Controller {
                     } else if (oldValue instanceof Priority) {
                         modifiedTask.setPriority((Priority) oldValue);
                     }
-                break;
+                    
+                    hashTable.add(modifiedTask);
+                    priorityQueue.enqueue(modifiedTask);
+                    deadlineHeap.enqueue(modifiedTask);
+
+                    break;
                 
                 case REMOVE_TASK:
                     TaskReminder removedTask = lastAction.getTask();
                     hashTable.add(removedTask);
                     priorityQueue.enqueue(removedTask);
-                break;
+                    deadlineHeap.enqueue(removedTask);
+                    break;
             }
             confirmUndoAction = true;
         } else {
@@ -182,6 +216,7 @@ public class Controller {
         }
         return confirmUndoAction;
     }
+
     public String randomID() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder sb = new StringBuilder();
@@ -200,40 +235,23 @@ public class Controller {
 
         return calendar.getTime();
     }
-
-    public String showTask() {
+        
+    public String showTasks() {
         List<TaskReminder> tasks = hashTable.getAllTasks();
-        StringBuilder msg = new StringBuilder();
-    
-        // Ordena las tareas primero por prioridad y luego por fecha límite
-        Collections.sort(tasks, new Comparator<TaskReminder>() {
-            @Override
-            public int compare(TaskReminder task1, TaskReminder task2) {
-                int priorityComparison = task1.getPriority().compareTo(task2.getPriority());
-                if (priorityComparison == 0) {
-                    return task1.getDeadline().compareTo(task2.getDeadline());
-                }
-                return priorityComparison;
-            }
-        }
-        );
-    
-        String currentPriority = "";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Formato de fecha
+        StringBuilder msg = new StringBuilder("Task:\n");
     
         for (TaskReminder task : tasks) {
-            if (!currentPriority.equals(task.getPriority().toString())) {
-                msg.append(task.getPriority().toString()).append(":\n");
-                currentPriority = task.getPriority().toString();
-            }
-    
             msg.append("Id: ").append(task.getId()).append("\n");
             msg.append("Title: ").append(task.getTitle()).append("\n");
             msg.append("Description: ").append(task.getDescription()).append("\n");
-            msg.append("Deadline: ").append(dateFormat.format(task.getDeadline())).append("\n\n");
+            msg.append("Priority: ").append(task.getPriority()).append("\n");
+            msg.append("Deadline: ").append(dateFormat.format(task.getDeadline())).append("\n\n"); // Formatear la fecha
         }
     
         return msg.toString();
     }
+    
+
     
 }
