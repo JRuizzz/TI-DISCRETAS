@@ -1,10 +1,10 @@
 ﻿#Diseño de Escenarios
 
-\### BinaryTreeTest
+### BinaryTreeTest
 
 | Nombre                      | Clase          | Escenario                                                       |
 
-\|-----------------------------|----------------|-----------------------------------------------------------------|
+|-----------------------------|----------------|-----------------------------------------------------------------|
 
 | testScoreBoardOutput        | BinaryTreeTest | Verificar que el tablero de puntuaciones muestra correctamente los nombres de los usuarios añadidos |
 
@@ -16,11 +16,11 @@
 
 
 
-\### EnhancedLinkedListTests
+### EnhancedLinkedListTests
 
 | Nombre                                    | Clase                 | Escenario                                                                     |
 
-\|-------------------------------------------|-----------------------|-------------------------------------------------------------------------------|
+|-------------------------------------------|-----------------------|-------------------------------------------------------------------------------|
 
 | validateFirstCellLinkConnectivity         | EnhancedLinkedListTests | Asegurar que la primera celda del tablero tenga el número correcto de enlaces |
 
